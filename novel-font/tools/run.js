@@ -2,6 +2,8 @@
   Author Yuebaizz
 */
 
+import { logger } from './libs/utils'
+
 function run(task, options) {
   const start = new Date()
   logger.info(`Starting '${task.name}${options ? ` (${JSON.stringify(options)})` : ''}'...`)
