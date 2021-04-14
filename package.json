@@ -1,0 +1,26 @@
+{
+  "name": "latest-novel",
+  "version": "1.0.0",
+  "description": "Get the latest novel",
+  "main": "server.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/NightRain233/latest-novel.git"
+  },
+  "keywords": [
+    "novel",
+    "spider"
+  ],
+  "author": "yuebai nightrain",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/NightRain233/latest-novel/issues"
+  },
+  "homepage": "https://github.com/NightRain233/latest-novel#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
