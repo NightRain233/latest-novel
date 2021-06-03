@@ -1,46 +1,34 @@
 package main
 
 import (
-	// "github.com/gin-gonic/gin"
-	// "html/template"
+	// "fmt"
+
+	"github.com/gin-gonic/gin"
 	// "fmt"
 	"html/template"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"os"
 	"regexp"
 )
 
-func process(w http.ResponseWriter, r *http.Request) {
-	t, _ := template.ParseFiles("index.html") // 解析模板，返回 Template
-	t.Execute(w, "<h1>Hello World!</h1>")     // 执行模板，并将其传递给 w
-}
-
-func parseString(w http.ResponseWriter, r *http.Request) {
-	tmpl1 := `<!DOCTYPE html> <html>
-        <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-            <title>Go Web Programming</title>
-        </head>
-        <body>`
-	p := Parse("https://www.vbiquge.com/8_8088/9152335.html")
-	tmpl2 := `</body> 
-    </html>`
-	s := tmpl1 + p + tmpl2
-	t := template.New("index.html")
-	t.Parse(s)
-	t.Execute(w, "Hello World!")
-}
-
 func main() {
-	http.HandleFunc("/template", parseString)
-	http.ListenAndServe(":8080", nil)
-	// s := Parse("https://www.vbiquge.com/8_8088/9152335.html")
-	// fmt.Println(s)
+	r := gin.Default()
+	r.SetFuncMap(template.FuncMap{
+		"md5": MD5,
+	})
+	r.LoadHTMLFiles("index.html")
+	r.GET("/html", func(c *gin.Context) {
+		c.HTML(200, "index.html", "")
+	})
+	r.Run(":8080")
 }
 
-func MD5(in string) string {
-	return in + "hello"
+func MD5() interface{} {
+	url := "https://www.vbiquge.com/8_8088/9152347.html"
+	novel := Parse(url)
+	return template.HTML(novel)
 }
 
 //定义新的数据类型
@@ -54,16 +42,19 @@ func (keyword Spider) get_html_header() string {
 	client := &http.Client{}
 	req, err := http.NewRequest("GET", keyword.url, nil)
 	if err != nil {
+		log.Fatal(err)
 	}
 	for key, value := range keyword.header {
 		req.Header.Add(key, value)
 	}
 	resp, err := client.Do(req)
 	if err != nil {
+		log.Fatal(err)
 	}
 	defer resp.Body.Close()
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
+		log.Fatal(err)
 	}
 	return string(body)
 
@@ -86,7 +77,7 @@ func Parse(url string) string {
 	}
 	defer f.Close()
 
-	// url := "https://www.vbiquge.com/8_8088/9152335.html"
+	// url := "https://www.vbiquge.com/8_8088/9152347.html"
 	spider := &Spider{url, header}
 	html := spider.get_html_header()
 	// fmt.Println(html)
