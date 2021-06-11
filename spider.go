@@ -69,6 +69,8 @@ func (keyword Spider) get_html_header() string {
 	return string(body)
 
 }
+
+//根据首页url获取最新章节title和url
 func Parse(url string) string {
 	header := map[string]string{
 		"Host":                      "movie.douban.com",
@@ -87,10 +89,8 @@ func Parse(url string) string {
 	}
 	defer f.Close()
 
-	// url := "https://www.vbiquge.com/8_8088/9152347.html"
 	spider := &Spider{url, header}
 	html := spider.get_html_header()
-	// fmt.Println(html)
 	f.WriteString(html)
 
 	pattern := `<title>(.*?)- 新笔趣阁</title>`
@@ -109,6 +109,7 @@ func Parse(url string) string {
 
 }
 
+//根据章节url获得章节内容
 func Parse1(url string) string {
 	header := map[string]string{
 		"Host":                      "movie.douban.com",
@@ -120,18 +121,8 @@ func Parse1(url string) string {
 		"Referer":                   "https://movie.douban.com/top250",
 	}
 
-	//创建excel文件
-	// f, err := os.Create("./haha31.txt")
-	// if err != nil {
-	// 	panic(err)
-	// }
-	// defer f.Close()
-
-	// url := "https://www.vbiquge.com/8_8088/9152347.html"
 	spider := &Spider{url, header}
 	html := spider.get_html_header()
-	// fmt.Println(html)
-	// f.WriteString(html)
 
 	pattern := `p>最新章节：<a href="(.*?)" target="_blank">`
 	rp := regexp.MustCompile(pattern)
