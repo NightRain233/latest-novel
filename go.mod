@@ -1,4 +1,4 @@
-module spider
+module latest-novel
 
 go 1.16
 
