@@ -42,7 +42,7 @@ func GetNovel(url string) string {
 	rp = regexp.MustCompile(pattern)
 	find_txt2 = rp.FindAllStringSubmatch(html, -1)
 
-	novelurl := find_txt2[0][1]
+	novel := find_txt2[0][1]
 
 	//前后章
 	pattern = `link1\(\);</script>([\s\S]+?)<script>link2`
@@ -50,6 +50,6 @@ func GetNovel(url string) string {
 	find_txt2 = rp.FindAllStringSubmatch(html, -1)
 	bottom := "</div> " + strings.ReplaceAll(find_txt2[0][1], `href="`, `href="/novel`)
 
-	return title + novelurl + bottom
+	return title + novel + bottom
 
 }
