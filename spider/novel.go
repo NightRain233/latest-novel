@@ -12,20 +12,23 @@ type Chapter struct {
 }
 
 //根据小说首页url获得最新章节url和标题
-func GetLatestChapter(url string) Chapter {
+func GetLatestChapter(url string) *Chapter {
 	spider := &Spider{url}
 	html := spider.get_html_part()
-
 	pattern := `<p>最&nbsp;&nbsp;&nbsp;&nbsp;新：<a href="(.*?)">(.*?)</a>`
 	rp := regexp.MustCompile(pattern)
 	find_txt2 := rp.FindAllStringSubmatch(html, -1)
 
-	last_novel_url := find_txt2[0][1]
-	chapter := Chapter{
-		URL:   last_novel_url,
-		Title: find_txt2[0][2],
+	if len(find_txt2) > 0 {
+		last_novel_url := find_txt2[0][1]
+		chapter := &Chapter{
+			URL:   last_novel_url,
+			Title: find_txt2[0][2],
+		}
+		return chapter
 	}
-	return chapter
+
+	return nil
 }
 
 //根据最新章节url获取小说内容
@@ -45,7 +48,7 @@ func GetNovel(url string) string {
 	novel := find_txt2[0][1]
 
 	//前后章
-	pattern = `link1\(\);</script>([\s\S]+?)<script>link2`
+	pattern = `link1\(\);</script>([\s\S]+?下一章</a>)`
 	rp = regexp.MustCompile(pattern)
 	find_txt2 = rp.FindAllStringSubmatch(html, -1)
 	bottom := "</div> " + strings.ReplaceAll(find_txt2[0][1], `href="`, `href="/novel`)

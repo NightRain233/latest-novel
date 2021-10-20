@@ -28,7 +28,7 @@ func (keyword Spider) get_html_part() string {
 	resp := keyword.get_html_resp()
 	br := bufio.NewReader(resp.Body)
 	var line []byte
-	for i := 0; i < 96; i++ {
+	for i := 0; i < 78; i++ {
 		line, _, _ = br.ReadLine()
 	}
 	return string(line)

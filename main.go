@@ -40,9 +40,11 @@ func AsyncGetChapter() {
 		wg.Add(1)
 		go func(pos int, url string) {
 			chapter := spider.GetLatestChapter(url)
-			chapter_map[fmt.Sprintf("url%d", pos)] = chapter.URL
-			chapter_map[fmt.Sprintf("title%d", pos)] = chapter.Title
+			if chapter != nil {
 
+				chapter_map[fmt.Sprintf("url%d", pos)] = chapter.URL
+				chapter_map[fmt.Sprintf("title%d", pos)] = chapter.Title
+			}
 			wg.Done()
 		}(i, url)
 	}
