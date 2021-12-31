@@ -31,7 +31,7 @@ func main() {
 		AsyncGetChapter()
 		c.HTML(200, "bookshelf.html", chapter_map)
 	})
-	r.Run(":8080")
+	r.Run(":4040")
 }
 
 func AsyncGetChapter() {
