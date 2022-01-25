@@ -2,6 +2,7 @@ package spider
 
 import (
 	// "os"
+	"fmt"
 	"regexp"
 	"strings"
 )
@@ -14,7 +15,7 @@ type Chapter struct {
 //根据小说首页url获得最新章节url和标题
 func GetLatestChapter(url string) *Chapter {
 	spider := &Spider{url}
-	html := spider.get_html_part()
+	html := spider.get_html_all()
 	pattern := `<p>最&nbsp;&nbsp;&nbsp;&nbsp;新：<a href="(.*?)">(.*?)</a>`
 	rp := regexp.MustCompile(pattern)
 	find_txt2 := rp.FindAllStringSubmatch(html, -1)
@@ -35,6 +36,7 @@ func GetLatestChapter(url string) *Chapter {
 func GetNovel(url string) string {
 	spider := &Spider{url}
 	html := spider.get_html_all()
+	fmt.Printf("\nhtml:%+v\n\n", html)
 
 	pattern := `<title>(.*?)_31小说网</title>`
 	rp := regexp.MustCompile(pattern)

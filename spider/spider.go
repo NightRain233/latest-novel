@@ -1,7 +1,6 @@
 package spider
 
 import (
-	"bufio"
 	"io/ioutil"
 	"log"
 	"net/http"
@@ -24,15 +23,15 @@ func (keyword Spider) get_html_all() string {
 }
 
 //只获取目录页最新章节部分
-func (keyword Spider) get_html_part() string {
-	resp := keyword.get_html_resp()
-	br := bufio.NewReader(resp.Body)
-	var line []byte
-	for i := 0; i < 78; i++ {
-		line, _, _ = br.ReadLine()
-	}
-	return string(line)
-}
+// func (keyword Spider) get_html_part() string {
+// 	resp := keyword.get_html_resp()
+// 	br := bufio.NewReader(resp.Body)
+// 	var line []byte
+// 	for i := 0; i < 78; i++ {
+// 		line, _, _ = br.ReadLine()
+// 	}
+// 	return string(line)
+// }
 
 func (keyword Spider) get_html_resp() *http.Response {
 	client := &http.Client{}
