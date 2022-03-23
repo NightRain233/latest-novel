@@ -11,8 +11,6 @@ import (
 
 const baseUrl string = "http://www.31xiaoshuo.com"
 
-var chapter_map = map[string]string{}
-
 func main() {
 	r := gin.Default()
 	r.SetFuncMap(template.FuncMap{
@@ -24,28 +22,28 @@ func main() {
 		c.HTML(200, "index.html", novelurl)
 	})
 	r.GET("/bookshelf", func(c *gin.Context) {
-		AsyncGetChapter()
-		c.HTML(200, "bookshelf.html", chapter_map)
+		fmt.Printf("\nnovel:%+v\n\n", AsyncGetChapter())
+		c.HTML(200, "bookshelf.html", AsyncGetChapter())
 	})
 	r.Run(":4040")
 }
 
-func AsyncGetChapter() {
+func AsyncGetChapter() []conf.Novel {
 	var wg sync.WaitGroup
-	urls := conf.GetNovelURLs()
-	for i, url := range urls {
+	novels := conf.GetNovels()
+	for i := 0; i < len(novels); i++ {
 		wg.Add(1)
-		go func(pos int, url string) {
-			chapter := spider.GetLatestChapter(url)
-			if chapter != nil {
-
-				chapter_map[fmt.Sprintf("url%d", pos)] = chapter.URL
-				chapter_map[fmt.Sprintf("title%d", pos)] = chapter.Title
+		go func(pos int, novel []conf.Novel) {
+			if chapter := spider.GetLatestChapter(novels[pos].URL); chapter != nil {
+				novels[pos].Pos = pos + 1
+				novel[pos].ChapterURL = chapter.URL
+				novel[pos].Title = chapter.Title
 			}
 			wg.Done()
-		}(i, url)
+		}(i, novels)
 	}
 	wg.Wait()
+	return novels
 }
 
 func GetNovel(novel_url string) interface{} {

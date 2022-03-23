@@ -1,6 +1,7 @@
 package conf
 
 import (
+	"fmt"
 	"gopkg.in/yaml.v3"
 	"io/ioutil"
 	"log"
@@ -10,6 +11,18 @@ import (
 	"runtime"
 	"strings"
 )
+
+type globalConf struct {
+	Novels []Novel `yaml:"novels"`
+}
+
+type Novel struct {
+	Pos        int
+	Name       string `yaml:"name"`
+	URL        string `yaml:"url"`
+	Title      string
+	ChapterURL string
+}
 
 var (
 	defaultGlobalConf globalConf
@@ -56,10 +69,6 @@ func getCurrentAbPathByCaller() string {
 	return abPath
 }
 
-type globalConf struct {
-	URLs []string `yaml:"urls"`
-}
-
 func parseConfig() {
 	log.Println(GlobalConfPath)
 	f, err := os.Open(GlobalConfPath)
@@ -75,8 +84,9 @@ func parseConfig() {
 	if err := yaml.Unmarshal(b, &defaultGlobalConf); err != nil {
 		log.Fatalf("unmarshal file %v: %v", GlobalConfPath, err)
 	}
+	fmt.Printf("\n defaultGlobalConf:%+v\n\n", defaultGlobalConf)
 }
 
-func GetNovelURLs() []string {
-	return defaultGlobalConf.URLs
+func GetNovels() []Novel {
+	return defaultGlobalConf.Novels
 }
