@@ -1,0 +1,37 @@
+<html>
+<style>
+    body {
+        background-color: #E9FAFF;
+    }
+
+    .bookshelf {
+        margin: 10px auto;
+        border: 3px solid #A6D3E8;
+        width: 550px;
+        height: 150px;
+        background: #FEF9EF;
+        margin-top: 100px;
+        margin-right: 350px;
+
+    }
+
+    .innershelf {
+        margin-top: 30px;
+
+        margin-left: 70px;
+
+    }
+</style>
+
+<body>
+    <div class="bookshelf">
+
+        <div class="innershelf">
+            {{range .}}
+            {{.Pos}}. {{.Name}}<a href="/novel{{.ChapterURL}}"> {{.Title}}</a><br>
+            {{ end}}
+        </div>
+    </div>
+</body>
+
+</html>
