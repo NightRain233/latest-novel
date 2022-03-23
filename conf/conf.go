@@ -33,6 +33,7 @@ func setConfFullPath(name string) {
 		GlobalConfPath = path.Join(dir, name)
 		return
 	}
+	GlobalConfPath = path.Join(dir, "conf", name)
 }
 
 // 获取当前执行文件绝对路径
@@ -60,6 +61,7 @@ type globalConf struct {
 }
 
 func parseConfig() {
+	log.Println(GlobalConfPath)
 	f, err := os.Open(GlobalConfPath)
 	if err != nil {
 		log.Fatalf("open %v: %v", GlobalConfPath, err)
