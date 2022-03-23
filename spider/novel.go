@@ -1,8 +1,6 @@
 package spider
 
 import (
-	// "os"
-	"fmt"
 	"regexp"
 	"strings"
 )
@@ -36,7 +34,6 @@ func GetLatestChapter(url string) *Chapter {
 func GetNovel(url string) string {
 	spider := &Spider{url}
 	html := spider.get_html_all()
-	fmt.Printf("\nhtml:%+v\n\n", html)
 
 	pattern := `<title>(.*?)_31小说网</title>`
 	rp := regexp.MustCompile(pattern)

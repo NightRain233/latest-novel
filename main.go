@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"html/template"
+	"latest-novel/conf"
 	"latest-novel/spider"
 	"sync"
 )
@@ -11,11 +12,6 @@ import (
 const baseUrl string = "http://www.31xiaoshuo.com"
 
 var chapter_map = map[string]string{}
-var urls = [3]string{
-	"http://www.31xiaoshuo.com/0/196/",
-	"http://www.31xiaoshuo.com/4/4542/",
-	"http://www.31xiaoshuo.com/176/176372/",
-}
 
 func main() {
 	r := gin.Default()
@@ -36,6 +32,7 @@ func main() {
 
 func AsyncGetChapter() {
 	var wg sync.WaitGroup
+	urls := conf.GetNovelURLs()
 	for i, url := range urls {
 		wg.Add(1)
 		go func(pos int, url string) {
